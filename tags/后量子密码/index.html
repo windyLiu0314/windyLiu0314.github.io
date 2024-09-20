@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Windy</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(/assets/avator.jpg)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Windy</div>
+        
+            <div>Something for nothing.</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+            <a href="/tags/" class="Btn">
+              <li>Tags</li>
+            </a>  
+          
+            <a href="/categories/" class="Btn">
+              <li>Categories</li>
+            </a>  
+          
+            <a href="/about/" class="Btn">
+              <li>About</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+            
+                <a target="_blank" rel="noopener" href="https://github.com/windyLiu0314">
+                    <img src="/assets/github.svg" />
+                </a>
+            
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+    <header class='PageTitle'>
+        <h1>{ 后量子密码 }</h1>
+    </header>
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2024/09/20/Kyber/">一文(或许）速通Kyber</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2024-09-20T15:55:27.000Z" itemprop="datePublished">
+    2024-09-20
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81/">后量子密码</a> }
+  </li>
+
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p>​	说来惭愧，作为一名后量子密码学专业烟酒生，竟在研2才学习Kyber。</p>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>​	Kyber由Joppe Bos, Léo Ducas等一万个人(人实在太多)在2016年提出的后量子算法，也是🦅酱国家标准与技术研究院(NIST)全国征集的产物，在2022年被选为标准KEM算法。其设计目标是提供一种能抵抗量子计算机攻击的安全**密钥封装机制(KEM)**。</p>
+<hr>
+<p>​	</p>
+<p>​	众所周知，得益于对称密码的效率，在网络浏览器的HTTPS协议、电子邮件加密标准，各种VPN技术等需要处理大规模和及时加密需求的场景，对称密码有着巨大优势。但是密钥咋传输过去捏？由此出现了一种常见的组合方法：公钥加密解决最初的密钥交换问题，而对称密码用于处理上述场景的加密需求，保证系统可靠实用。</p>
+<h2 id="密钥封装机制-KEM"><a href="#密钥封装机制-KEM" class="headerlink" title="密钥封装机制(KEM)"></a>密钥封装机制(KEM)</h2><p>​	既然提到了KEM，自然是要好好讲讲的，接下来我们有请<strong>GPT，启动</strong>！</p>
+<p>​	<strong>密钥封装机制</strong>（Key Encapsulation Mechanism, KEM）是一种用于在不安全的通信通道上安全交换密钥的方法。它通常与公钥加密技术一起使用，以确保密钥在传输过程中的保密性和完整性。</p>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>KEM 的工作原理涉及以下几个步骤：</p>
+<ol>
+<li><strong>密钥生成</strong>：首先，算法会生成一对公钥和私钥。公钥用于封装密钥，而私钥用于解封装。</li>
+<li><strong>封装</strong>：在发送密钥时，发送方使用接收方的公钥将一个随机生成的会话密钥（对称密钥）封装成密文。这一过程通常产生两个输出：一个是封装后的密文，另一个是会话密钥本身。</li>
+<li><strong>传输</strong>：密文随后通过不安全的通信通道发送给接收方。</li>
+<li><strong>解封装</strong>：接收方收到密文后，使用自己的私钥来解开封装，恢复出会话密钥。</li>
+</ol>
+<h3 id="为什么使用-KEM？"><a href="#为什么使用-KEM？" class="headerlink" title="为什么使用 KEM？"></a>为什么使用 KEM？</h3><p>使用KEM的主要原因包括：</p>
+<ul>
+<li><strong>安全性</strong>：KEM 提供了一种安全的方法来传输密钥，即使公钥是公开的，没有私钥，攻击者也无法从密文中恢复出密钥。</li>
+<li><strong>简单性和效率</strong>：KEM 通常设计得较为简单，易于实现和集成到现有系统中。其封装和解封装过程相对高效，适合在需要频繁密钥交换的场景中使用。</li>
+<li><strong>抗量子安全性</strong>：特别是基于格的KEM（如Kyber），可以抵抗量子计算机的潜在威胁，为未来的加密通信提供保障。</li>
+</ul>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>KEM 的应用非常广泛，主要包括：</p>
+<ul>
+<li><strong>安全通信</strong>：在TLS等协议中使用KEM来安全交换密钥，确保数据传输的安全。</li>
+<li><strong>云计算和云存储</strong>：使用KEM来安全传输用于加密存储数据的密钥，保护云上数据的安全。</li>
+<li><strong>物联网（IoT）</strong>：在资源受限的物联网设备间使用KEM来交换密钥，确保设备间的通信安全。</li>
+</ul>
+<h2 id="密钥交换算法"><a href="#密钥交换算法" class="headerlink" title="密钥交换算法"></a>密钥交换算法</h2><p>​	都提到了KEM了，密钥交换当然不会缺席。</p>
+<p>​	但学习时乍一看上面KEM的内容，脑子一激灵，这TM不就是密钥交换算法吗？<strong>GPT，速速登场</strong>！</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+
+
+            <footer>
+    <div>© 2024 - Windy </div>
+    <div>
+        <span>
+            Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a target="_blank" rel="noopener" href="https://github.com/nameoverflow/hexo-theme-icalm">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
