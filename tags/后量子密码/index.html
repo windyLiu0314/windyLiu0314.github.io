@@ -103,42 +103,61 @@
     <div>
       
         <p>说来惭愧，作为一名后量子密码学专业烟酒生，竟在研2才学习Kyber。</p>
-<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>Kyber由Joppe Bos, Léo Ducas等一万个人(人实在太多)在2016年提出的后量子算法，也是🦅酱国家标准与技术研究院(NIST)全国征集的产物，在2022年被选为标准KEM算法。其设计目标是提供一种能抵抗量子计算机攻击的安全**密钥封装机制(KEM)**。</p>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>​	</p>
+<p>Kyber由Joppe Bos, Léo Ducas等一万个人(人实在太多)在2016年提出的后量子算法，也是🦅酱国家标准与技术研究院(NIST)全国征集的产物，在2022年被选为标准KEM算法。其设计目标是提供一种能抵抗量子计算机攻击的安全**密钥封装机制(KEM)**。</p>
+<p>​	</p>
 <p>众所周知，得益于对称密码的效率，在网络浏览器的HTTPS协议、电子邮件加密标准，各种VPN技术等需要处理大规模和及时加密需求的场景，对称密码有着巨大优势。但是密钥咋传输过去捏？由此出现了一种常见的组合方法：公钥加密解决最初的密钥交换问题，而对称密码用于处理上述场景的加密需求，保证系统可靠实用。</p>
 <p>来点实际的应用，众所周知x2，<strong>TLS（传输层安全）</strong>协议是个伟大的协议，用于在互联网上两个或多个通信实体之间提供数据加密、身份验证和数据完整性，同时它也是SSL协议的后续版本，通常用于加密Web浏览器和服务器之间的通信，当然也可以应用于其他应用程序。TLS协议有个重要步骤：握手，这一步骤的目的是安全地协商通信双方将使用的加密算法、验证通信双方的身份（<strong>同学，你也不想你的浏览器记录被XXX吧）</strong>，并协商一个共享的秘密密钥。既然是通信，必然会应用到上面的组合方法，那此时我们该怎么把对称密钥传输给对方呢？</p>
 <p>假设此时服务器和客户端需要建立通信，服务器生成了一个临时的对称会话密钥，那么它就可以使用客户端的公钥并通过KEM封装这个临时密钥，而客户端接收到密文后，则可以利用其私钥解封装，从而获得对称会话密钥。</p>
+<p>​	</p>
 <h1 id="密钥封装机制-KEM"><a href="#密钥封装机制-KEM" class="headerlink" title="密钥封装机制(KEM)"></a>密钥封装机制(KEM)</h1><hr>
 <p>既然提到了KEM，自然是要好好讲讲的，接下来我们有请<strong>GPT，启动</strong>！</p>
+<p>​	</p>
 <p><strong>密钥封装机制</strong>（Key Encapsulation Mechanism, KEM）是一种用于在不安全的通信通道上安全交换密钥的方法。它通常与公钥加密技术一起使用，以确保密钥在传输过程中的保密性和完整性。</p>
-<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>KEM 的工作原理涉及以下几个步骤：</p>
+<p>​	</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>​	</p>
+<p>KEM 的工作原理涉及以下几个步骤：</p>
 <ol>
 <li><strong>密钥生成</strong>：首先，算法会生成一对公钥和私钥。公钥用于封装密钥，而私钥用于解封装。</li>
 <li><strong>封装</strong>：在发送密钥时，发送方使用接收方的公钥将一个随机生成的会话密钥（对称密钥）封装成密文。这一过程通常产生两个输出：一个是封装后的密文，另一个是会话密钥本身。</li>
 <li><strong>传输</strong>：密文随后通过不安全的通信通道发送给接收方。</li>
 <li><strong>解封装</strong>：接收方收到密文后，使用自己的私钥来解开封装，恢复出会话密钥。</li>
 </ol>
-<h2 id="为什么使用-KEM？"><a href="#为什么使用-KEM？" class="headerlink" title="为什么使用 KEM？"></a>为什么使用 KEM？</h2><p>使用KEM的主要原因包括：</p>
+<p>​	</p>
+<h2 id="为什么使用-KEM？"><a href="#为什么使用-KEM？" class="headerlink" title="为什么使用 KEM？"></a>为什么使用 KEM？</h2><p>​	</p>
+<p>使用KEM的主要原因包括：</p>
 <ul>
 <li><strong>安全性</strong>：KEM 提供了一种安全的方法来传输密钥，即使公钥是公开的，没有私钥，攻击者也无法从密文中恢复出密钥。</li>
 <li><strong>简单性和效率</strong>：KEM 通常设计得较为简单，易于实现和集成到现有系统中。其封装和解封装过程相对高效，适合在需要频繁密钥交换的场景中使用。</li>
 <li><strong>抗量子安全性</strong>：特别是基于格的KEM（如Kyber），可以抵抗量子计算机的潜在威胁，为未来的加密通信提供保障。</li>
 </ul>
-<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>KEM 的应用非常广泛，主要包括：</p>
+<p>​	</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>​	</p>
+<p>KEM 的应用非常广泛，主要包括：</p>
 <ul>
 <li><strong>安全通信</strong>：在TLS等协议中使用KEM来安全交换密钥，确保数据传输的安全。</li>
 <li><strong>云计算和云存储</strong>：使用KEM来安全传输用于加密存储数据的密钥，保护云上数据的安全。</li>
 <li><strong>物联网（IoT）</strong>：在资源受限的物联网设备间使用KEM来交换密钥，确保设备间的通信安全。</li>
 </ul>
+<p>​	</p>
+<p>​	</p>
 <h1 id="密钥交换算法"><a href="#密钥交换算法" class="headerlink" title="密钥交换算法"></a>密钥交换算法</h1><hr>
 <p>都提到了KEM了，密钥交换当然不会缺席。</p>
 <p>学习时乍一看上面KEM的内容，脑子一激灵，这TM不就是密钥交换算法吗？<strong>GPT，速速登场</strong>！</p>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>密钥交换算法允许通信双方在没有共享秘密的前提下通过公开的通信渠道<strong>共同创建（协商）</strong>一个只有他们知道的秘密密钥。最关键的是，即使所有通信都被一个第三方（窃听者）捕获，该第三方也无法计算出该密钥。其实就是两个通信方（eg.客户端和服务器）通过某种协议，共同协商生成一个共享的对称密钥，而无需实际传递密钥，通常通过数学来实现。</p>
+<p>​	</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>​	</p>
+<p>密钥交换算法允许通信双方在没有共享秘密的前提下通过公开的通信渠道<strong>共同创建（协商）</strong>一个只有他们知道的秘密密钥。最关键的是，即使所有通信都被一个第三方（窃听者）捕获，该第三方也无法计算出该密钥。其实就是两个通信方（eg.客户端和服务器）通过某种协议，共同协商生成一个共享的对称密钥，而无需实际传递密钥，通常通过数学来实现。</p>
 <p>说不如做，看完下面这个算法，应该能对概念有所了解。</p>
-<h2 id="Diffie-Hellman-DH-算法"><a href="#Diffie-Hellman-DH-算法" class="headerlink" title="Diffie-Hellman(DH)算法"></a>Diffie-Hellman(DH)算法</h2><p>经典的算法经得起时间考验，<strong>伟大的GPT无需多言</strong>。</p>
+<p>​	</p>
+<h2 id="Diffie-Hellman-DH-算法"><a href="#Diffie-Hellman-DH-算法" class="headerlink" title="Diffie-Hellman(DH)算法"></a>Diffie-Hellman(DH)算法</h2><p>​	</p>
+<p>经典的算法经得起时间考验，<strong>伟大的GPT无需多言</strong>。</p>
 <p>我们直接上算法步骤，数学闪耀时刻：</p>
 <p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921115949503.png" alt="image-20240921115949503"></p>
 <p>众所周知x3，传统的公钥算法的安全性大多基于大整数分解和离散对数问题的困难性，而DH算法的安全性就是依赖于离散对数问题的难解性，这不是这篇文章讨论的重点，感兴趣可以去学习这个和ECDH算法。</p>
+<p>​	</p>
+<p>​	</p>
 <h1 id="两者之对比"><a href="#两者之对比" class="headerlink" title="两者之对比"></a>两者之对比</h1><hr>
+<p>​	</p>
 <p>其实看到这里，可能会觉得这两个算法好像，应用重合度有点高？</p>
 <p>当然不是，虽然这两种算法的目标相同：<strong>确保密钥在通信双方之间安全地交换</strong>，但实际上他们的实现方式和安全保证有所不同。</p>
 <p>我更想这样解释：<strong>密钥封装的出现，是为了进一步提高密钥管理的安全性</strong>。在密钥交换算法中，我们会发现实际上在传输过程中并不会出现密文，大家都是用自己的私钥和对方的公开值来生成共享密钥，但KEM不一样，KEM在传输过程中会有密文的出现。二者还有不同，从概念可以看出，只有在密钥交换算法中才会出现<strong>协商</strong>二字，而密钥封装机制，重点在于<strong>封装</strong>。</p>
@@ -146,8 +165,11 @@
 <p><strong>密钥交换算法</strong>适用于需要双方实时共同生成和使用密钥的场景，这种方法的优点是它提供了<strong>前向保密性</strong>）——即使后续密钥交换过程中的私钥被泄露，之前的会话也无法被解密。</p>
 <p><strong>密钥封装机制</strong>则更适用于需要将密钥从一方安全传输到另一方的场景，尤其是在涉及存储或长期使用的密钥时更加安全。此外，接下来我们要介绍的Kyber，在未来防御量子计算机攻击方面也显示出了更大的潜力。</p>
 <p><strong>不管再怎么样，工具不应该被局限，合适的使用才是最优解。</strong></p>
+<p>​	</p>
+<p>​	</p>
 <h1 id="Kyber（n-k-q"><a href="#Kyber（n-k-q" class="headerlink" title="Kyber（n,k,q)"></a>Kyber（n,k,q)</h1><hr>
 <p>这会是新王登基吗？</p>
+<p>​	</p>
 <p>先来讲讲Kyber的安全性吧，Kyber是一个基于格（lattice）的密钥封装机制，旨在抵抗可能即将到来的量子计算机攻击，Kyber利用了格密码的结构，尤其是基于<strong>错误学习问题（Learning with error）</strong>及其变种<strong>R-LWE</strong>问题，因此，其安全性自然也来源于这两个困难问题的难解性。</p>
 <p>具体的前置知识在此不作介绍，详细可以查阅下面的链接：</p>
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FUb75AUXMvw&t=2802s">rC3 2021 Kyber and Post-Quantum Crypto - How does it work? (youtube.com)</a></p>
@@ -155,20 +177,28 @@
 <p>同其他公钥算法一致，Kyber也分尺寸，不同尺寸的算法对应着不同尺寸的安全性，具体见下表：</p>
 <p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921152044549.png" alt="image-20240921152044549"></p>
 <p>其中，三种尺寸的Kyber<strong>会话密钥长度<em>n</em></strong>均为256bits，同时也代表着x的最大幂次为256，即可以存储256个系数，而k则代表着在整个算法步骤中的多项式向量维度，下面我们用一个<em>baby Kyber<del>(4,2,17)</del><em>为例，用一个例子详细向你展示Kyber的所有步骤，在此之前，希望你对</em>LWE</em>问题有所了解，因为我对Markdown语言并不熟悉，编写公式太耗时间，故直接贴图，但是我找了一篇很棒的文章，在这里我更建议大家直接去看这篇文章原文<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43810525/article/details/137523949?spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Ctr-3-137523949-blog-127595167.235%5Ev43%5Epc_blog_bottom_relevance_base6&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Ctr-3-137523949-blog-127595167.235%5Ev43%5Epc_blog_bottom_relevance_base6&utm_relevant_index=6">Kyber加密算法-CSDN博客</a>。</p>
-<h2 id="密钥生成"><a href="#密钥生成" class="headerlink" title="密钥生成"></a>密钥生成</h2><p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921221040080.png" alt="image-20240921221040080"></p>
+<h2 id="密钥生成"><a href="#密钥生成" class="headerlink" title="密钥生成"></a>密钥生成</h2><p>​	</p>
+<p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921221040080.png" alt="image-20240921221040080"></p>
 <p>补充一下，这个<em>s</em>的系数也应该是随机的小系数，且错误向量<em>e</em>应当是从噪声分布中采样而得。</p>
-<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921221246170.png" alt="image-20240921221246170"></p>
+<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><p>​	</p>
+<p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921221246170.png" alt="image-20240921221246170"></p>
 <p>补充一下，噪声都是从噪声分布中采样而得，具体可查阅<strong>离散分布上的整数采样</strong>的相关资料了解噪声的产生。</p>
 <p><em>u</em>由于封装随机多项式向量<em>r</em>，<em>v</em>用于封装经过编码后的明文<em>m</em>。</p>
-<h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921221559415.png" alt="image-20240921221559415"></p>
+<h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p>​	</p>
+<p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921221559415.png" alt="image-20240921221559415"></p>
 <p>是的，总共两步去噪（四舍五入），首先对<em>u</em>去噪得到<em>r</em>，再对<em>v</em>去噪得到编码后的明文<em>Encode(m)<em>，最后对明文解码得到明文</em>m</em>。</p>
+<p>​	</p>
+<p>​	</p>
 <h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><hr>
+<p>​	</p>
 <p>也许你会想，四舍五入？解码后的明文真的不会和原始明文有出入吗？</p>
 <p>你是对的。理论上来说，是<strong>有概率解密后出现错误</strong>，但是这个概率学者们在研发的时候已然考虑在内，如你所见，概率之小到我们在大部分应用场景上都无需太多焦虑。</p>
 <p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921222340686.png" alt="image-20240921222340686"></p>
 <p>到这里，Kyber最表层的东西就算介绍完成了。</p>
 <p>更有意思的东西往往隐藏在海面之下，而这些仅仅是蜉蝣之见。</p>
+<p>​	</p>
 <hr>
+<p>​	</p>
 <p>感谢观看。</p>
 <p>拙劣之作，仅作参考，若有出入，实属抱歉，欢迎指正，你我共勉。</p>
 
