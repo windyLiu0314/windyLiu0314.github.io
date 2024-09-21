@@ -134,14 +134,16 @@
 <p>我们直接上算法步骤，数学闪耀时刻：</p>
 <p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921115949503.png" alt="image-20240921115949503"></p>
 <p>众所周知x3，传统的公钥算法的安全性大多基于大整数分解和离散对数问题的困难性，而DH算法的安全性就是依赖于离散对数问题的难解性，这不是这篇文章讨论的重点，感兴趣可以去学习这个和ECDH算法。</p>
-<h1 id="两者之对比"><a href="#两者之对比" class="headerlink" title="两者之对比"></a>两者之对比</h1><p>其实看到这里，可能会觉得这两个算法好像，应用重合度有点高？</p>
+<h1 id="两者之对比"><a href="#两者之对比" class="headerlink" title="两者之对比"></a>两者之对比</h1><hr>
+<p>其实看到这里，可能会觉得这两个算法好像，应用重合度有点高？</p>
 <p>当然不是，虽然这两种算法的目标相同：<strong>确保密钥在通信双方之间安全地交换</strong>，但实际上他们的实现方式和安全保证有所不同。</p>
 <p>我更想这样解释：<strong>密钥封装的出现，是为了进一步提高密钥管理的安全性</strong>。在密钥交换算法中，我们会发现实际上在传输过程中并不会出现密文，大家都是用自己的私钥和对方的公开值来生成共享密钥，但KEM不一样，KEM在传输过程中会有密文的出现。二者还有不同，从概念可以看出，只有在密钥交换算法中才会出现<strong>协商</strong>二字，而密钥封装机制，重点在于<strong>封装</strong>。</p>
 <p>两者都用于安全地处理密钥，但它们各自最适合的应用场景有所不同。</p>
 <p><strong>密钥交换算法</strong>适用于需要双方实时共同生成和使用密钥的场景，这种方法的优点是它提供了<strong>前向保密性</strong>）——即使后续密钥交换过程中的私钥被泄露，之前的会话也无法被解密。</p>
 <p><strong>密钥封装机制</strong>则更适用于需要将密钥从一方安全传输到另一方的场景，尤其是在涉及存储或长期使用的密钥时更加安全。此外，接下来我们要介绍的Kyber，在未来防御量子计算机攻击方面也显示出了更大的潜力。</p>
 <p><strong>不管再怎么样，工具不应该被局限，合适的使用才是最优解。</strong></p>
-<h1 id="Kyber（n-k-q"><a href="#Kyber（n-k-q" class="headerlink" title="Kyber（n,k,q)"></a>Kyber（n,k,q)</h1><p>这会是新王登基吗？</p>
+<h1 id="Kyber（n-k-q"><a href="#Kyber（n-k-q" class="headerlink" title="Kyber（n,k,q)"></a>Kyber（n,k,q)</h1><hr>
+<p>这会是新王登基吗？</p>
 <p>先来讲讲Kyber的安全性吧，Kyber是一个基于格（lattice）的密钥封装机制，旨在抵抗可能即将到来的量子计算机攻击，Kyber利用了格密码的结构，尤其是基于<strong>错误学习问题（Learning with error）</strong>及其变种<strong>R-LWE</strong>问题，因此，其安全性自然也来源于这两个困难问题的难解性。</p>
 <p>具体的前置知识在此不作介绍，详细可以查阅下面的链接：</p>
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FUb75AUXMvw&t=2802s">rC3 2021 Kyber and Post-Quantum Crypto - How does it work? (youtube.com)</a></p>
@@ -156,7 +158,8 @@
 <p><em>u</em>由于封装随机多项式向量<em>r</em>，<em>v</em>用于封装经过编码后的明文<em>m</em>。</p>
 <h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921221559415.png" alt="image-20240921221559415"></p>
 <p>是的，总共两步去噪（四舍五入），首先对<em>u</em>去噪得到<em>r</em>，再对<em>v</em>去噪得到编码后的明文<em>Encode(m)<em>，最后对明文解码得到明文</em>m</em>。</p>
-<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>也许你会想，四舍五入？解码后的明文真的不会和原始明文有出入吗？</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><hr>
+<p>也许你会想，四舍五入？解码后的明文真的不会和原始明文有出入吗？</p>
 <p>你是对的。理论上来说，是<strong>有概率解密后出现错误</strong>，但是这个概率学者们在研发的时候已然考虑在内，如你所见，概率之小到我们在大部分应用场景上都无需太多焦虑。</p>
 <p><img src="C:\Users\23866\windyLiu0314.github.io\source_posts\Kyber\image-20240921222340686.png" alt="image-20240921222340686"></p>
 <p>到这里，Kyber最表层的东西就算介绍完成了。</p>
