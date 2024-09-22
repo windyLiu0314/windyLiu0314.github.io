@@ -108,7 +108,7 @@
 <p>​	</p>
 <h2 id="1-创建github账号"><a href="#1-创建github账号" class="headerlink" title="1. 创建github账号"></a>1. 创建github账号</h2><p>这个可以查查资料，此处略。</p>
 <p>​	</p>
-<h2 id="2-创建repository"><a href="#2-创建repository" class="headerlink" title="2. 创建repository"></a>2. 创建repository</h2><p><img src="/./1/image-20240814114158689.png" alt="image-20240814114158689"></p>
+<h2 id="2-创建repository"><a href="#2-创建repository" class="headerlink" title="2. 创建repository"></a>2. 创建repository</h2><p><img src="/image-20240814114158689.png" alt="image-20240814114158689"></p>
 <p>点击你的github<strong>头像</strong>，进入主页面，找到右上角<strong>＋号</strong>，选择<strong>creat new repository</strong>。</p>
 <p>此处需要注意的是，<strong>Repository name</strong>在自己输入时，最好<strong>严格按照“GitHub昵称.github.io”创建</strong>，且在部署<strong>本地博客文件夹</strong>名称时，也最好严格按照该格式，否则大概率出现一些奇奇怪怪的Bug。</p>
 <p>其他选项无大碍，直接拉到最后点击<strong>Creat repository</strong>即可。</p>
@@ -134,7 +134,7 @@
 <h2 id="4-编写博客"><a href="#4-编写博客" class="headerlink" title="4. 编写博客"></a>4. 编写博客</h2><p>完成上述操作后，我们即可在本地部署Github博客</p>
 <ul>
 <li><h4 id="安装Hexo官方主题"><a href="#安装Hexo官方主题" class="headerlink" title="安装Hexo官方主题"></a>安装Hexo官方主题</h4><p>在[这里](<a target="_blank" rel="noopener" href="https://hexo.io/themes/">Themes | Hexo</a>)，你可以找到所有Hexo官方主题，通过Demo选择中意的主题，点击对应主题的Github链接，回到本地博客根目录，利用<strong>Git Bash</strong>将其clone至当前目录（详细指令可见主题Github的readme部分），随后回到本地博客根目录，找到<code>_config.YML</code>，修改其中的<code>theme</code>，将其改为新主题名即可。</p>
-<p><img src="/1/image-20240815234731338.png" alt="image-20240815234731338"></p>
+<img src="/2024/08/08/1/image-20240815234731338.png" class title="image-20240815234731338">
 </li>
 <li><h4 id="更新部署博客界面"><a href="#更新部署博客界面" class="headerlink" title="更新部署博客界面"></a>更新部署博客界面</h4><p>  每一次对博客的修改部署，我们都需要在本地博客文件夹根目录下执行下述操作</p>
   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean	<span class="comment"># 清空一下缓存，有时候博客页面显示不正常也可以试试这个命令行</span></span><br><span class="line">$ hexo g	<span class="comment"># 是hexo generate的简写，把刚刚做的改动生成更新一下</span></span><br><span class="line">$ hexo s	<span class="comment"># 在本地服务器看看博客有没有更新：https://localhost:4000</span></span><br><span class="line">$ hexo d	<span class="comment"># hexo deploy，如果本地服务器看了没问题就可以输入github账号和密码传到网站上啦</span></span><br></pre></td></tr></table></figure></li>
