@@ -163,7 +163,7 @@
 <p>当然不是，虽然这两种算法的目标相同：<strong>确保密钥在通信双方之间安全地交换</strong>，但实际上他们的实现方式和安全保证有所不同。</p>
 <p>我更想这样解释：<strong>密钥封装的出现，是为了进一步提高密钥管理的安全性</strong>。在密钥交换算法中，我们会发现实际上在传输过程中并不会出现密文，大家都是用自己的私钥和对方的公开值来生成共享密钥，但KEM不一样，KEM在传输过程中会有密文的出现。二者还有不同，从概念可以看出，只有在密钥交换算法中才会出现<strong>协商</strong>二字，而密钥封装机制，重点在于<strong>封装</strong>。</p>
 <p>两者都用于安全地处理密钥，但它们各自最适合的应用场景有所不同。</p>
-<p><strong>密钥交换算法</strong>适用于需要双方实时共同生成和使用密钥的场景，这种方法的优点是它提供了<strong>前向保密性</strong>）——即使后续密钥交换过程中的私钥被泄露，之前的会话也无法被解密。</p>
+<p><strong>密钥交换算法</strong>适用于需要双方实时共同生成和使用密钥的场景，这种方法的优点是它提供了<strong>前向保密性</strong>——即使后续密钥交换过程中的私钥被泄露，之前的会话也无法被解密。</p>
 <p><strong>密钥封装机制</strong>则更适用于需要将密钥从一方安全传输到另一方的场景，尤其是在涉及存储或长期使用的密钥时更加安全。此外，接下来我们要介绍的Kyber，在未来防御量子计算机攻击方面也显示出了更大的潜力。</p>
 <p><strong>不管再怎么样，工具不应该被局限，合适的使用才是最优解。</strong></p>
 <p>​	</p>
@@ -178,7 +178,7 @@
 <p>同其他公钥算法一致，Kyber也分尺寸，不同尺寸的算法对应着不同尺寸的安全性，具体见下表：</p>
 <img src="/2024/09/20/Kyber/image-20240921152044549.png" class title="image-20240921152044549">
 
-<p>其中，三种尺寸的Kyber<strong>会话密钥长度<em>n</em></strong>均为256bits，同时也代表着x的最大幂次为256，即可以存储256个系数，而k则代表着在整个算法步骤中的多项式向量维度，下面我们用一个<em>baby Kyber<del>(4,2,17)</del><em>为例，用一个例子详细向你展示Kyber的所有步骤，在此之前，希望你对</em>LWE</em>问题有所了解，因为我对Markdown语言并不熟悉，编写公式太耗时间，故直接贴图，但是我找了一篇很棒的文章，在这里我更建议大家直接去看这篇文章原文<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43810525/article/details/137523949?spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Ctr-3-137523949-blog-127595167.235%5Ev43%5Epc_blog_bottom_relevance_base6&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Ctr-3-137523949-blog-127595167.235%5Ev43%5Epc_blog_bottom_relevance_base6&utm_relevant_index=6">Kyber加密算法-CSDN博客</a>。</p>
+<p>其中，三种尺寸的Kyber<strong>会话密钥长度<em>n</em></strong>均为256bits，同时也代表着x的最大幂次为256，即可以存储256个系数，而k则代表着在整个算法步骤中的多项式向量维度，下面我们用一个<em>baby Kyber<del>(4,2,17)</del><em>为例，用一个例子详细向你展示Kyber的所有步骤，在此之前，希望你对</em>LWE</em>问题有所了解，因为我对Markdown语言并不熟悉，编写公式太耗时间，故直接贴图，但是我找了一篇很棒的文章，在这里我更建议大家直接去看这篇文章<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43810525/article/details/137523949?spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Ctr-3-137523949-blog-127595167.235%5Ev43%5Epc_blog_bottom_relevance_base6&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Ctr-3-137523949-blog-127595167.235%5Ev43%5Epc_blog_bottom_relevance_base6&utm_relevant_index=6">原文</a>。</p>
 <h2 id="密钥生成"><a href="#密钥生成" class="headerlink" title="密钥生成"></a>密钥生成</h2><p>​	</p>
 <img src="/2024/09/20/Kyber/image-20240921221040080.png" class title="image-20240921221040080">
 
@@ -189,7 +189,7 @@
 <img src="/2024/09/20/Kyber/image-20240921221246170.png" class title="image-20240921221246170">
 
 <p>补充一下，噪声都是从噪声分布中采样而得，具体可查阅<strong>离散分布上的整数采样</strong>的相关资料了解噪声的产生。</p>
-<p><em>u</em>由于封装随机多项式向量<em>r</em>，<em>v</em>用于封装经过编码后的明文<em>m</em>。</p>
+<p><em>u</em>用于封装随机多项式向量<em>r</em>，<em>v</em>用于封装经过编码后的明文<em>m</em>。</p>
 <h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p>​	</p>
 <img src="/2024/09/20/Kyber/image-20240921221559415.png" class title="image-20240921221559415">
 
@@ -197,14 +197,14 @@
 <p>​	</p>
 <p>​	</p>
 <h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><hr>
-<p>​	</p>
 <p>也许你会想，四舍五入？解码后的明文真的不会和原始明文有出入吗？</p>
-<p>你是对的。理论上来说，是<strong>有概率解密后出现错误</strong>，但是这个概率学者们在研发的时候已然考虑在内，如你所见，概率之小到我们在大部分应用场景上都无需太过焦虑。</p>
+<p>​	</p>
+<p>你是对的。理论上来说，是<strong>有概率解密后的明文和原本明文有所出入</strong>，但是这个概率学者们在研发的时候已然考虑在内，如你所见，概率之小到我们在大部分应用场景上都无需太过焦虑。</p>
 <img src="/2024/09/20/Kyber/image-20240921222340686.png" class title="image-20240921222340686">
 
+<p>​	</p>
 <p>到这里，Kyber最表层的东西就算介绍完成了。</p>
 <p>更有意思的东西往往隐藏在海面之下，而这些仅仅是蜉蝣之见。</p>
-<p>​	</p>
 <hr>
 <p>​	</p>
 <p>感谢观看。</p>
