@@ -152,7 +152,8 @@
 <h2 id="Diffie-Hellman-DH-算法"><a href="#Diffie-Hellman-DH-算法" class="headerlink" title="Diffie-Hellman(DH)算法"></a>Diffie-Hellman(DH)算法</h2><p>​	</p>
 <p>经典的算法经得起时间考验，<strong>伟大的GPT无需多言</strong>。</p>
 <p>我们直接上算法步骤，数学闪耀时刻：</p>
-<p><img src="/image-20240921115949503.png" alt="image-20240921115949503"></p>
+<img src="/2024/09/20/Kyber/image-20240921115949503.png" class title="image-20240921115949503">
+
 <p>众所周知x3，传统的公钥算法的安全性大多基于大整数分解和离散对数问题的困难性，而DH算法的安全性就是依赖于离散对数问题的难解性，这不是这篇文章讨论的重点，感兴趣可以去学习这个和ECDH算法。</p>
 <p>​	</p>
 <p>​	</p>
@@ -175,17 +176,23 @@
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FUb75AUXMvw&t=2802s">rC3 2021 Kyber and Post-Quantum Crypto - How does it work? (youtube.com)</a></p>
 <p>Kyber出色的地方在于其运算速度之快，密钥和密文的尺寸又相对较小。</p>
 <p>同其他公钥算法一致，Kyber也分尺寸，不同尺寸的算法对应着不同尺寸的安全性，具体见下表：</p>
-<p><img src="/image-20240921152044549.png" alt="image-20240921152044549"></p>
+<img src="/2024/09/20/Kyber/image-20240921152044549.png" class title="image-20240921152044549">
+
 <p>其中，三种尺寸的Kyber<strong>会话密钥长度<em>n</em></strong>均为256bits，同时也代表着x的最大幂次为256，即可以存储256个系数，而k则代表着在整个算法步骤中的多项式向量维度，下面我们用一个<em>baby Kyber<del>(4,2,17)</del><em>为例，用一个例子详细向你展示Kyber的所有步骤，在此之前，希望你对</em>LWE</em>问题有所了解，因为我对Markdown语言并不熟悉，编写公式太耗时间，故直接贴图，但是我找了一篇很棒的文章，在这里我更建议大家直接去看这篇文章原文<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43810525/article/details/137523949?spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Ctr-3-137523949-blog-127595167.235%5Ev43%5Epc_blog_bottom_relevance_base6&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~Ctr-3-137523949-blog-127595167.235%5Ev43%5Epc_blog_bottom_relevance_base6&utm_relevant_index=6">Kyber加密算法-CSDN博客</a>。</p>
 <h2 id="密钥生成"><a href="#密钥生成" class="headerlink" title="密钥生成"></a>密钥生成</h2><p>​	</p>
-<p><img src="/image-20240921221040080.png" alt="image-20240921221040080"></p>
+<img src="/2024/09/20/Kyber/image-20240921221040080.png" class title="image-20240921221040080">
+
+
+
 <p>补充一下，这个<em>s</em>的系数也应该是随机的小系数，且错误向量<em>e</em>应当是从噪声分布中采样而得。</p>
 <h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><p>​	</p>
-<p><img src="/image-20240921221246170.png" alt="image-20240921221246170"></p>
+<img src="/2024/09/20/Kyber/image-20240921221246170.png" class title="image-20240921221246170">
+
 <p>补充一下，噪声都是从噪声分布中采样而得，具体可查阅<strong>离散分布上的整数采样</strong>的相关资料了解噪声的产生。</p>
 <p><em>u</em>由于封装随机多项式向量<em>r</em>，<em>v</em>用于封装经过编码后的明文<em>m</em>。</p>
 <h2 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h2><p>​	</p>
-<p><img src="/image-20240921221559415.png" alt="image-20240921221559415"></p>
+<img src="/2024/09/20/Kyber/image-20240921221559415.png" class title="image-20240921221559415">
+
 <p>是的，总共两步去噪（四舍五入），首先对<em>u</em>去噪得到<em>r</em>，再对<em>v</em>去噪得到编码后的明文<em>Encode(m)<em>，最后对明文解码得到明文</em>m</em>。</p>
 <p>​	</p>
 <p>​	</p>
@@ -193,7 +200,8 @@
 <p>​	</p>
 <p>也许你会想，四舍五入？解码后的明文真的不会和原始明文有出入吗？</p>
 <p>你是对的。理论上来说，是<strong>有概率解密后出现错误</strong>，但是这个概率学者们在研发的时候已然考虑在内，如你所见，概率之小到我们在大部分应用场景上都无需太过焦虑。</p>
-<p><img src="/image-20240921222340686.png" alt="image-20240921222340686"></p>
+<img src="/2024/09/20/Kyber/image-20240921222340686.png" class title="image-20240921222340686">
+
 <p>到这里，Kyber最表层的东西就算介绍完成了。</p>
 <p>更有意思的东西往往隐藏在海面之下，而这些仅仅是蜉蝣之见。</p>
 <p>​	</p>
