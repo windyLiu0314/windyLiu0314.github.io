@@ -74,6 +74,119 @@
     <header class="title">
       
         <h1>
+          <a href="/2024/12/17/private-knowledge-base/">Anything+Ollama搭建本地私有知识库</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2024-12-17T13:55:51.000Z" itemprop="datePublished">
+    2024-12-17
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/">杂七杂八</a> }
+  </li>
+
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p>你是否也遇到过这样的<strong>困扰</strong>：花了大量时间精心调教一个自己用得顺手的GPT，却发现它越用越卡，或者它无法进行长时间记忆，无法真正理解你的需求？</p>
+<p>你是否<strong>设想</strong>过：能否有一个专属于你，甚至只服务于某个特定领域的大模型？你可以向它不断输入你在这个方向上的所学所悟，把它打造成一个只存储特定领域知识的“藏经阁”。在你学习的同时，它也在同步积累和成长，逐渐成为你在这一领域中最得力的助手和伙伴。</p>
+<p>把格局放大，在这个离不开AI的时代，你是否担心你投喂的资料的数据安全性呢？</p>
+<p><strong>点个Follow</strong>，我将向你介绍一个或许能解决上述所有痛点的方案——<strong>AnythingLLM+Ollama！</strong></p>
+<img src="/2024/12/17/private-knowledge-base/image-20241217221549507.png" class title="image-20241217221549507">
+
+<p>ps：是的我还是用Gpt生成了一个对比表格……</p>
+<p>​	</p>
+<p>​	</p>
+<h1 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h1><p>LLM：大语言模型（Large Language Model）</p>
+<p>RAG：检索增强生成(Retrieval-Augmented Generation），是一种使用外部知识库来补充大语言模型的上下文并生成响应的技术。 说白了其实就是，<strong>让大模型能够参考相应知识从而给出合理答案</strong>的技术。</p>
+<p>总之，<strong>LLM+RAG</strong>是目前自动构建私有本地知识库的主要手段。</p>
+<p>​	</p>
+<h1 id="Ollama"><a href="#Ollama" class="headerlink" title="Ollama"></a>Ollama</h1><p>这个大家应该也挺熟悉，至少有所耳闻，反正我在社交媒体已经看到这个框架若干次了。</p>
+<p><strong>作用：</strong>轻松部署本地大模型。</p>
+<img src="/2024/12/17/private-knowledge-base/image-20241217223301540.png" class title="image-20241217223301540">
+
+<p>上图展示了部分Ollama支持部署的大模型，具体的可以去访问<a target="_blank" rel="noopener" href="https://ollama.com/library">Ollama官网</a>。</p>
+<p>​	</p>
+<p>​	</p>
+<h1 id="AnythingLLM"><a href="#AnythingLLM" class="headerlink" title="AnythingLLM"></a>AnythingLLM</h1><p>直接分享一篇csdn<a target="_blank" rel="noopener" href="https://blog.csdn.net/sheex2012/article/details/138339166">文章</a>吧。草，写的真好。</p>
+<p>​	</p>
+<p>​	</p>
+<h1 id="部署步骤"><a href="#部署步骤" class="headerlink" title="部署步骤"></a>部署步骤</h1><p>部署方法有很多，有直接Docker，也有直接部署在个人电脑上。但由于实验室服务器滞销(bushi)，故在此我把Ollama作为后端部署在服务器(Linux)上，AnythingLLM作为前端部署在个人PC电脑上(windows)。</p>
+<p>​	</p>
+<h2 id="服务器部署"><a href="#服务器部署" class="headerlink" title="服务器部署"></a>服务器部署</h2><ol>
+<li>打开终端，输入下面指令。</li>
+</ol>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://ollama.com/install.sh | sh</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>完成上一步，即代表Ollama已经安装在服务器上，下一步选择一个自己中意的开源大模型。在选择大模型时，务必先对大模型进行背调（评估其能力，知晓其运行环境要求）。在这里，我选择llama3-8b。</li>
+</ol>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ollama run llama3</span><br></pre></td></tr></table></figure>
+
+<p>  这段指令是运行llama3模型，如果本地没有该模型会自动下载。附一个<a target="_blank" rel="noopener" href="https://blog.csdn.net/My_wife_QBL/article/details/139094759">Ollama 常用命令大全</a>。</p>
+<ol start="3">
+<li><p>安装完成后，服务器端部署即完成。需要注意的是，<strong>Ollama默认端口为11434</strong>。</p>
+<p> ​</p>
+</li>
+</ol>
+<p>	</p>
+<h2 id="客户端部署"><a href="#客户端部署" class="headerlink" title="客户端部署"></a>客户端部署</h2><p>服务器部署完成后，我们即可在客户端部署。</p>
+<ol>
+<li><p>下载并安装<a target="_blank" rel="noopener" href="https://anythingllm.com/">AnythingLLM</a>。</p>
+</li>
+<li><p>在服务器上运行</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ollama run 模型名称</span><br></pre></td></tr></table></figure>
+
+<p> 或</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ollama server</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在服务器上通过以下命令查询具体端口号</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -tuln | grep ollama</span><br></pre></td></tr></table></figure>
+
+<p> 打开powershell或命令行(cmd)，通过ssh链接Ollama占用的端口（通常是默认端口），指令如下</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 11434:localhost:11434 user_name@ip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接完成后，打开AnythingLLM，打开左下角的设置，将LLM首选设置和Embedder首选项全部换成羊驼Ollama，它会通过下面的默认Base URL自动读取服务器上的大模型，如果没有，那就是URL的问题，建议上网查方法 (或者问Gpt嘿嘿) 。</p>
+ <img src="/2024/12/17/private-knowledge-base/image-20241217231806648.png" class title="image-20241217231806648">
+</li>
+<li><p>上一步如果可以顺利执行的话，就可以开始创建自己的工作区，创建完成后点击工作区的设置，点击聊天设置，将LLM提供者一样换成羊驼Ollama<img src="/2024/12/17/private-knowledge-base/image-20241217232035753.png" class title="image-20241217232035753"></p>
+</li>
+</ol>
+<p>​	另外拉到下面，可以通过合适的聊天提示词丰富你的大模型。至此，搭建大致结束，你可以进一步了解如何	更好地利用你的大模型。</p>
+<p>​	</p>
+<p>​	</p>
+<p>参考链接：</p>
+<p><a target="_blank" rel="noopener" href="https://developer.volcengine.com/articles/7392435489300545563">全民AI时代：手把手教你用Ollama &amp; AnythingLLM搭建AI知识库，无需编程，跟着做就行！ - 文章 - 开发者社区 - 火山引擎</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sheex2012/article/details/138339166">基于Ollama+AnythingLLM搭建本地私有知识库系统-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/My_wife_QBL/article/details/139094759">Ollama 常用命令_ollama 命令-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/obullxl/p/18295202/NTopic2024071001">Ollama完整教程：本地LLM管理、WebUI对话、Python&#x2F;Java客户端API应用 - 老牛啊 - 博客园</a></p>
+<p>​	</p>
+<p>​	</p>
+<hr>
+<p>感谢阅读。</p>
+<p>仅供参考，拙劣之作，若有出入，感谢指导，你我共勉。</p>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
           <a href="/2024/09/20/Kyber/">一文(或许)速通Kyber</a>
         </h1>
       
